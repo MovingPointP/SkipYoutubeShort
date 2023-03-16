@@ -1,0 +1,12 @@
+{
+    "name": "Skip YoutubeShort",
+    "description": "YoutubeShortのループを止めます。",
+    "version": "1.0",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "js": ["main.js"],
+            "matches": ["https://www.youtube.com/shorts/*"]
+        }
+    ]
+}
