@@ -13,12 +13,11 @@ const attachEvent = () => {
   clearTimeout(timeoutVideo)
   timeoutVideo = setTimeout(() => {
     //main動画の再取得
-    mainVideo = document.querySelector('video.video-stream.html5-main-video[src]')
-    mainVideo.removeAttribute('loop')
-    //動画終了時
-    mainVideo.onended = () => {
-      goNextVideo()
-    }
+    mainVideo = document.querySelector("video.video-stream.html5-main-video[src]")
+    mainVideo.removeAttribute("loop")
+    //動画終了イベント
+    mainVideo.removeEventListener('ended', goNextVideo)
+    mainVideo.addEventListener('ended', goNextVideo)
 	}, 1000 )
 }
 
@@ -47,22 +46,23 @@ let mainVideo
 let shortsContainer = null
 
 window.onload = () => {
+  if (shortsContainer !== null) return
   const timer = setInterval(() => {
     shortsContainer = document.querySelector("#shorts-container")
-    if (shortsContainer !== null) {
-      clearInterval(timer)
-      //なめらかなスクロール
-      shortsContainer.style.scrollBehavior = 'smooth'
-      //デフォルトのスクロール時にイベント付加
-      shortsContainer.onscroll = () => {
-        attachEvent()
-      }
-      //ダブルクリック時の処理
-      shortsContainer.ondblclick = (e) => {
-        skip10Sec(e)
-      }
-      //初回セットアップ
+    if (shortsContainer === null) return
+    clearInterval(timer)
+    //なめらかなスクロール
+    shortsContainer.style.scrollBehavior = 'smooth'
+    //デフォルトのスクロール時のイベント
+    shortsContainer.onscroll = () => {
       attachEvent()
     }
+    //ダブルクリックイベント
+    shortsContainer.ondblclick = (e) => {
+      skip10Sec(e)
+    }
+    //初回セットアップ
+    attachEvent()
+    
   }, 200)
 }
